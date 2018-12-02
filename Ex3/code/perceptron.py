@@ -6,7 +6,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from skeleton_sgd import helper
+from sgd import helper
 
 
 """
