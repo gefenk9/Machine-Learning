@@ -77,6 +77,7 @@ plt.savefig('classifier.png')
 plt.close()
 #1.c
 accuracy = _calc_accuracy(w, test_data, test_labels)
+print (accuracy)
 #1.d
 for i in range(len(test_data)):
     pred = np.dot(w, test_data[i])

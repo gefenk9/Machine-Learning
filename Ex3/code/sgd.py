@@ -68,7 +68,7 @@ def _find_best_eta(train_data , train_labels):
         teta = 10 ** scale
         teta_l.append(teta)
         C = 1
-        T = 1000
+        T = 10
         suc = []
         for t in range(T):
             p = np.random.permutation(len(train_data))
@@ -106,6 +106,7 @@ def _find_best_c(best_eta, train_data, train_labels):
     C_success = []
     C_list = []
     times = 10
+    T=10
     for j in range(-5, 6):
         C_j = 10 ** j
         C_list.append(C_j)
@@ -138,6 +139,7 @@ def _find_best_c(best_eta, train_data, train_labels):
 
     best_c = C_list[C_success.index(max(C_success))]
     print ("best C is {}".format(best_c))
+    return best_c
 
 
 train_data, train_labels, validation_data, validation_labels, test_data, test_labels = helper()
