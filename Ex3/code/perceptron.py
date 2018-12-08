@@ -8,7 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sgd import helper
 
-
 """
 Assignment 3 question 1 skeleton.
 
