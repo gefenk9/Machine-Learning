@@ -1,5 +1,5 @@
 #################################
-# Your name:
+# Your name: Gefen keinan
 #################################
 
 # Please import and use stuff only from the packages numpy, sklearn, matplotlib
@@ -78,7 +78,6 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
         Returns: np.ndarray of shape (11,) :
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
-    # TODO: add your code here
     results = {}
     for exp in range(-5, 5):
         C = 10 ** exp
@@ -91,6 +90,8 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
             if predicted[i] == y_val[i]:
                 suc_val += 1.0
         results[C] = [suc_val / len(y_val), svc.score(X_train, y_train)]
+        create_plot(X_train, y_train, svc)
+        plt.savefig('.\C\{} boundries.png'.format(C))
     return results
 
 def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
@@ -98,7 +99,23 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
         Returns: np.ndarray of shape (11,) :
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
-    # TODO: add your code here
+    C = 10
+    results = {}
+    for exp in range(-5, 5):
+        gamma = 10 ** exp
+        svc = svm.SVC(kernel='linear', C=C, gamma=gamma).fit(X_train, y_train)
+
+        # validate the model
+        suc_val = 0
+        predicted = svc.predict(X_val)
+        for i in range(len(predicted)):
+            if predicted[i] == y_val[i]:
+                suc_val += 1.0
+        results[C] = [suc_val / len(y_val), svc.score(X_train, y_train)]
+        create_plot(X_train, y_train, svc)
+        plt.savefig('.\gamma\{} boundries-gamma.png'.format(C))
+    return results
+
 
 
 train_x, train_y, val_x, val_y = get_points()
