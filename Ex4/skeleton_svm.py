@@ -50,8 +50,28 @@ def train_three_kernels(X_train, y_train, X_val, y_val):
     Returns: np.ndarray of shape (3,2) :
                 A two dimensional array of size 3 that contains the number of support vectors for each class(2) in the three kernels.
     """
-    # TODO: add your code here
+    support_vectors = np.zeros(shape=(3,2))
+    C = 1000
 
+    #linear
+    svc = svm.SVC(kernel='linear', C=C).fit(X_train, y_train)
+    support_vectors[0] = svc.n_support_
+    create_plot(X_train, y_train, svc)
+    plt.show()
+
+    #quadratic
+    svc = svm.SVC(kernel='poly', C=C).fit(X_train, y_train)
+    support_vectors[1] = svc.n_support_
+    create_plot(X_train, y_train, svc)
+    plt.show()
+
+    #rbf
+    svc = svm.SVC(kernel='rbf', C=C).fit(X_train, y_train)
+    support_vectors[2] = svc.n_support_
+    create_plot(X_train, y_train, svc)
+    plt.show()
+
+    return support_vectors
 
 def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
     """
@@ -59,7 +79,19 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
     # TODO: add your code here
+    results = {}
+    for exp in range(-5, 5):
+        C = 10 ** exp
+        svc = svm.SVC(kernel='linear', C=C).fit(X_train, y_train)
 
+        # validate the model
+        suc_val = 0
+        predicted = svc.predict(X_val)
+        for i in range(len(predicted)):
+            if predicted[i] == y_val[i]:
+                suc_val += 1.0
+        results[C] = [suc_val / len(y_val), svc.score(X_train, y_train)]
+    return results
 
 def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
     """
@@ -67,3 +99,8 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
     # TODO: add your code here
+
+
+train_x, train_y, val_x, val_y = get_points()
+#support_vectors = train_three_kernels(train_x, train_y, val_x, val_y)
+results = linear_accuracy_per_C(train_x, train_y, val_x, val_y)
