@@ -103,7 +103,7 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
     results = {}
     for exp in range(-5, 5):
         gamma = 10 ** exp
-        svc = svm.SVC(kernel='linear', C=C, gamma=gamma).fit(X_train, y_train)
+        svc = svm.SVC(kernel='rbf', C=C, gamma=gamma).fit(X_train, y_train)
 
         # validate the model
         suc_val = 0
@@ -111,13 +111,14 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
         for i in range(len(predicted)):
             if predicted[i] == y_val[i]:
                 suc_val += 1.0
-        results[C] = [suc_val / len(y_val), svc.score(X_train, y_train)]
+        results[gamma] = [suc_val / len(y_val), svc.score(X_train, y_train)]
         create_plot(X_train, y_train, svc)
-        plt.savefig('.\gamma\{} boundries-gamma.png'.format(C))
+        plt.savefig('.\gamma\{} boundries-gamma.png'.format(gamma))
     return results
 
 
 
 train_x, train_y, val_x, val_y = get_points()
-#support_vectors = train_three_kernels(train_x, train_y, val_x, val_y)
-results = linear_accuracy_per_C(train_x, train_y, val_x, val_y)
+support_vectors = train_three_kernels(train_x, train_y, val_x, val_y)
+#results = linear_accuracy_per_C(train_x, train_y, val_x, val_y)
+#results = rbf_accuracy_per_gamma(train_x, train_y, val_x, val_y)
