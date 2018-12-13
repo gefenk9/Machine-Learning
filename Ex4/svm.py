@@ -79,7 +79,7 @@ def linear_accuracy_per_C(X_train, y_train, X_val, y_val):
                     An array that contains the accuracy of the resulting model on the VALIDATION set.
     """
     results = {}
-    for exp in range(-5, 5):
+    for exp in range(-5, 6):
         C = 10 ** exp
         svc = svm.SVC(kernel='linear', C=C).fit(X_train, y_train)
 
@@ -101,7 +101,7 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
     """
     C = 10
     results = {}
-    for exp in range(-5, 5):
+    for exp in range(-5, 6):
         gamma = 10 ** exp
         svc = svm.SVC(kernel='rbf', C=C, gamma=gamma).fit(X_train, y_train)
 
@@ -119,6 +119,6 @@ def rbf_accuracy_per_gamma(X_train, y_train, X_val, y_val):
 
 
 train_x, train_y, val_x, val_y = get_points()
-support_vectors = train_three_kernels(train_x, train_y, val_x, val_y)
+#support_vectors = train_three_kernels(train_x, train_y, val_x, val_y)
 #results = linear_accuracy_per_C(train_x, train_y, val_x, val_y)
-#results = rbf_accuracy_per_gamma(train_x, train_y, val_x, val_y)
+results = rbf_accuracy_per_gamma(train_x, train_y, val_x, val_y)
