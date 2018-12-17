@@ -48,7 +48,7 @@ def get_args():
                         help="""single will train a single model and plot the learning curves,
                          series will train multiple models and plot the final loss values.""")
     parser.add_argument('-bs', '--batch_size', type=int, default=32)
-    parser.add_argument('-e', '--epochs', type=int, default=50)
+    parser.add_argument('-e', '--epochs', type=int, default=80)
     parser.add_argument('-hl', '--hidden_layers', nargs='+', type=int, default=(32, 16),
                         help="""A list of integers that defines the network architecture. 
                                 Every integer x in the list adds another layer of size x to the network.
@@ -91,7 +91,7 @@ def check_args(args):
 def main():
     args = get_args()
     hidden_layers = check_args(args)
-
+    hidden_layers = [[16]*60]
     if args.mode == 'single':
         score_train, score_test = train_eval_single(
             hidden_layers[0], args.skips, args.epochs,

@@ -57,9 +57,17 @@ class KerasMnist(object):
         the class variables input_dim, hidden_layer_dims and num_classes.
         '''
         ### YOUR CODE STARTS HERE
+        self.model = Sequential()
+        self.model.add(Dense(self.hidden_layer_dims[0], input_dim=self.input_dim))
+        self.model.add(Activation('relu'))
 
+        for i in range(1, len(self.hidden_layer_dims)):
+            self.model.add(Dense(self.hidden_layer_dims[i], input_dim=self.hidden_layer_dims[i - 1]))
+            self.model.add(Activation('relu'))
+
+        self.model.add(Dense(self.num_classes, input_dim=self.hidden_layer_dims[len(self.hidden_layer_dims) - 1]))
+        self.model.add(Activation('softmax'))
         ### YOUR CODE ENDS HERE
-
         self.model.compile(loss='categorical_crossentropy',
                            optimizer=SGD(),
                            metrics=['accuracy'])
