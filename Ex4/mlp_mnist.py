@@ -8,7 +8,7 @@ from keras.datasets import mnist
 from keras.models import Sequential, Model
 from keras.layers import Dense, Activation, Input
 from keras.optimizers import SGD
-
+from keras.layers.merge import concatenate
 from matplotlib import pyplot as plt
 
 
@@ -85,7 +85,21 @@ class KerasMnist(object):
          2) Define the variable out as the output of the network.
         '''
         ### YOUR CODE STARTS HERE
-
+        x = Input(shape=(self.input_dim,))
+        denses = []
+        activations = []
+        dense0 = Dense(self.hidden_layer_dims[0])(x)
+        activated = keras.layers.Activation('relu')(dense0)
+        denses.append(dense0)
+        activations.append(activated)
+        for i in range(0, len(self.hidden_layer_dims)):
+            before_activate = Dense(self.hidden_layer_dims[i])(activations[i])
+            if i % self.skips == 0 and i != 0:
+                before_activate = Dense(self.hidden_layer_dims[i])(keras.layers.Add()([before_activate, denses[i - self.skips]]))
+            after_activate = keras.layers.Activation('relu')(before_activate)
+            denses.append(before_activate)
+            activations.append(after_activate)
+        out = Dense(self.num_classes, activation='softmax')(activations[len(denses) - 1])
         ### YOUR CODE ENDS HERE
 
         self.model = Model([x], out)
