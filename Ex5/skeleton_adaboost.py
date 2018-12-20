@@ -24,6 +24,7 @@ def run_adaboost(X_train, y_train, T):
             iteration of the algorithm.
     """
     # TODO: add your code here
+    hypothesis = _create_hypothesis(X_train)
     D =[]
     m = len(X_train)
     D_0 = [1/m]*m #First disrebution
@@ -47,8 +48,41 @@ def run_adaboost(X_train, y_train, T):
 def _pick_best_learner():
     pass
 
+def _create_hypothesis(trainging_x):
+    """
+    from the trainging data we will return all hypothesis from the two classes
+    :return:
+    """
+    hypothesis = []
+    for x in trainging_x:
+        for index, value in enumerate(x):
+            hypothes = Hypothesa_class_A(value, index)
+            hypothesis.append(hypothes)
+            hypothes = Hypothesa_class_B(value, index)
+            hypothesis.append(hypothes)
+    return hypothesis
 
+class Hypothesa_class_A:
+    def __init__(self, theta, feature_index):
+        self.theta = theta
+        self.feature_index = feature_index
 
+    def classify(self, point):
+        if point[self.feature_index] > self.theta:
+            return -1
+        else:
+            return 1
+
+class Hypothesa_class_B:
+    def __init__(self, theta, feature_index):
+        self.theta = theta
+        self.feature_index = feature_index
+
+    def classify(self, point):
+        if point[self.feature_index] > self.theta:
+            return 1
+        else:
+            return -1
 
 
 ##############################################
