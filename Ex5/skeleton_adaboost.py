@@ -31,9 +31,15 @@ def run_adaboost(X_train, y_train, T):
     for i in range(T):
         h_t, epsilon = _pick_best_learner(D[i], X_train, y_train)
         a_t = 0.5*np.log((1-epsilon)/epsilon)
-        D_i = []
+        D_next = []
+
+        normalized_factor = 0
+        for z in range(m):
+            normalized_factor += D[i][z] * np.exp(-a_t * y_train[z] * h_t(X_train[z]))
         for j in range(m):
-            d_next_j = D[i][j] *np.exp(-a_t*y_train[j]*h_t(X_train[j]))
+            d_next_j = (D[i][j] * np.exp(-a_t*y_train[j]*h_t(X_train[j]))) / normalized_factor
+            D_next.append(d_next_j)
+
 
 ##############################################
 # You can add more methods here, if needed.
